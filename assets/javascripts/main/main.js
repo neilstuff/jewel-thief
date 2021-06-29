@@ -232,7 +232,7 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
     canvas.width = dw;
     canvas.height = dh;
 
-    var content = fs.readFileSync($(`#${src}`)[0].src.slice(7));
+    var content = fs.readFileSync($(`#${src}`)[0].src.slice(6));
     var buffer = toArrayBuffer(content);
     var blob = new Blob([buffer], { type: 'image/gif' });
     var image = new Image();
@@ -256,7 +256,7 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
  */
 function createAudio(src) {
-    var content = fs.readFileSync($(`#${src}`)[0].src.slice(7));
+    var content = fs.readFileSync($(`#${src}`)[0].src.slice(6));
     var buffer = toArrayBuffer(content);
     var blob = new Blob([buffer], { type: 'image/gif' });
 

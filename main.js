@@ -55,7 +55,7 @@ app.on('ready', function () {
 
     protocol.registerBufferProtocol('pug', function (request, callback) {
         let parsedUrl = require('url').parse(request.url);
-        var url = path.normalize(request.url.replace('pug:///', ''));
+        var url = path.normalize(request.url.replace('pug://', ''));
         let ext = path.extname(url);
 
         console.log(url);
