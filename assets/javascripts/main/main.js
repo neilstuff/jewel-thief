@@ -257,7 +257,7 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
  */
 function createAudio(src) {
-    var content = fs.readFileSync($(`#${src}`)[0].src.slice(7));
+    var content = fs.readFileSync($(`#${src}`)[0].src.slice(os.type() == 'Windows_NT' ? 7 : 6));
     var buffer = toArrayBuffer(content);
     var blob = new Blob([buffer], { type: 'audio/wav' });
 
