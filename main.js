@@ -8,6 +8,7 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 const pug = require('pug');
+const os = require('os');
 
 const app = electron.app
 const protocol = electron.protocol;
@@ -55,7 +56,7 @@ app.on('ready', function () {
 
     protocol.registerBufferProtocol('pug', function (request, callback) {
         let parsedUrl = require('url').parse(request.url);
-        var url = path.normalize(request.url.replace('pug://', ''));
+        var url = path.normalize(request.url.replace(os.type() == 'Windows_NT' ? 'pug:///' : 'pug://', ''));
         let ext = path.extname(url);
 
         console.log(url);

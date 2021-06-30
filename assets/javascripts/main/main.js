@@ -6,6 +6,7 @@
  */
 require('electron-disable-file-drop');
 
+var os = require('os');
 var fs = require('fs');
 
 const tileSize = 38;
@@ -99,7 +100,7 @@ $('#cancelSafe').on('click', (e) => {
  * Respond to the Document 'ready' event
  * 
  */
-$(document).ready(() => {
+ $(() => {
     var context = $('#canvas')[0].getContext('2d');
 
     createSpriteBuffer(0, mapSprites, 'testtileset', Tile.BLOCKED, 32, 32, 32, 32, 32, 32);
@@ -232,7 +233,7 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
     canvas.width = dw;
     canvas.height = dh;
 
-    var content = fs.readFileSync($(`#${src}`)[0].src.slice(6));
+    var content = fs.readFileSync($(`#${src}`)[0].src.slice(os.type() == 'Windows_NT' ? 7 : 6));
     var buffer = toArrayBuffer(content);
     var blob = new Blob([buffer], { type: 'image/gif' });
     var image = new Image();
@@ -256,9 +257,9 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
  */
 function createAudio(src) {
-    var content = fs.readFileSync($(`#${src}`)[0].src.slice(6));
+    var content = fs.readFileSync($(`#${src}`)[0].src.slice(7));
     var buffer = toArrayBuffer(content);
-    var blob = new Blob([buffer], { type: 'image/gif' });
+    var blob = new Blob([buffer], { type: 'audio/wav' });
 
     return new Audio(URL.createObjectURL(blob))
 
