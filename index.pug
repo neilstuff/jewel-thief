@@ -37,9 +37,7 @@ block content
 
   include assets/views/result.pug
 
-  script.
-    window.$ = window.jQuery = require("jquery"); 
-
+  script(src="node_modules/jquery/dist/jquery.min.js")
   script(src="assets/javascripts/util/fileutil.js")
   script(src="assets/javascripts/map/tile.js")
   script(src="assets/javascripts/main/main.js")

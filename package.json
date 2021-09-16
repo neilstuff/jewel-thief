@@ -33,14 +33,14 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "dependencies": {
-    "electron-disable-file-drop": "^1.0.2",
-    "pug": "^2.0.4",
-    "mime": "^2.4.5",
-    "jquery": "^3.5.1"
+    "pug": "^3.0.2",
+    "mime": "^2.5.2",
+    "jquery": "^3.6.0",
+    "node": "^15.8.0"
   },
   "devDependencies": {
-    "electron": "^8.2.5",
-    "electron-builder": "^22.6.0"
+    "electron": "^14.0.1",
+    "electron-builder": "^22.10.5"
   },
   "bugs": {
     "url": "https://github.com/thesourorange/electron-jewel-thief/issues"

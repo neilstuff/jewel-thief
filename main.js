@@ -3,17 +3,23 @@
 const config = require('./config.json');
 
 const electron = require('electron');
+
+const { app } = electron;
+const { protocol } = electron;
+const { ipcMain } = electron;
+const { dialog } = electron;
+const { shell } = electron;
+const { webContents } = electron;
+const { contextBridge } = electron;
+
+const BrowserWindow = electron.BrowserWindow;
+
 const mime = require('mime');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
-const pug = require('pug');
 const os = require('os');
-
-const app = electron.app
-const protocol = electron.protocol;
-
-const BrowserWindow = electron.BrowserWindow
+const pug = require('pug');
 
 const locals = {};
 
@@ -21,13 +27,21 @@ var mainWindow = null;
 
 function createWindow() {
     var extend = config.mode == "debug" ? 500 : 0;
+
     mainWindow = new BrowserWindow({
-        width: 128 * 3 + 24 + extend, height: 128 * 3 + 99,
+        width: 128 * 3 + 24 + extend, 
+        height: 128 * 3 + 99,
         resizable: false,
         autoHideMenuBar: true,
+
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            nativeWindowOpen: true,
+            preload: path.join(__dirname, "preload.js")
         }
+
     });
 
     mainWindow.setMenu(null);
