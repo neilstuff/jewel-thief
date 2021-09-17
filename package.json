@@ -35,12 +35,12 @@
   "dependencies": {
     "pug": "^3.0.2",
     "mime": "^2.5.2",
-    "jquery": "^3.6.0",
-    "node": "^15.8.0"
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "electron": "^14.0.1",
-    "electron-builder": "^22.10.5"
+    "electron-builder": "^22.10.5",
+    "node": "^15.8.0"
   },
   "bugs": {
     "url": "https://github.com/thesourorange/electron-jewel-thief/issues"
