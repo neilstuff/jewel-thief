@@ -67,7 +67,7 @@ app.on('ready', function () {
     protocol.registerBufferProtocol('pug', function (request, callback) {
         let parsedUrl = new URL(request.url);
         let pathname = path.normalize(path.toNamespacedPath(parsedUrl.pathname).startsWith("\\\\?\\") ?
-                                parsedUrl.pathname.replace('/', '') :  parsedUrl.pathname);
+                                parsedUrl.pathname.replace(/^\/*/, '') :  parsedUrl.pathname);
         let ext = path.extname(pathname);
 
         switch (ext) {
