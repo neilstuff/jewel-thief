@@ -102,44 +102,44 @@ $('#cancelSafe').on('click', (e) => {
     
     var context = $('#canvas')[0].getContext('2d');
 
-    createSpriteBuffer(0, mapSprites, 'testtileset', Tile.BLOCKED, 32, 32, 32, 32, 32, 32);
-    createSpriteBuffer(1, mapSprites, 'testtileset', Tile.BLOCKED, 0, 32, 32, 32, 32, 32);
-    createSpriteBuffer(2, mapSprites, 'testtileset', Tile.BLOCKED, 64, 32, 32, 32, 32, 32);
-    createSpriteBuffer(3, mapSprites, 'testtileset', Tile.WALK, 64, 0, 32, 32, 32, 32);
-    createSpriteBuffer(4, mapSprites, 'testtileset', Tile.WALK, 96, 0, 32, 32, 32, 32);
-    createSpriteBuffer(5, mapSprites, 'testtileset', Tile.SAIL, 128, 0, 32, 32, 32, 32);
-    createSpriteBuffer(6, mapSprites, 'testtileset', Tile.WALK, 0, 0, 32, 32, 32, 32);
-    createSpriteBuffer(7, mapSprites, 'testtileset', Tile.BLOCKED, 96, 32, 32, 32, 32, 32);
-    createSpriteBuffer(8, mapSprites, 'testtileset', Tile.WALK, 128, 32, 32, 32, 32, 32);
+    createSpriteBuffer(0, mapSprites, '#testtileset', Tile.BLOCKED, 32, 32, 32, 32, 32, 32);
+    createSpriteBuffer(1, mapSprites, '#testtileset', Tile.BLOCKED, 0, 32, 32, 32, 32, 32);
+    createSpriteBuffer(2, mapSprites, '#testtileset', Tile.BLOCKED, 64, 32, 32, 32, 32, 32);
+    createSpriteBuffer(3, mapSprites, '#testtileset', Tile.WALK, 64, 0, 32, 32, 32, 32);
+    createSpriteBuffer(4, mapSprites, '#testtileset', Tile.WALK, 96, 0, 32, 32, 32, 32);
+    createSpriteBuffer(5, mapSprites, '#testtileset', Tile.SAIL, 128, 0, 32, 32, 32, 32);
+    createSpriteBuffer(6, mapSprites, '#testtileset', Tile.WALK, 0, 0, 32, 32, 32, 32);
+    createSpriteBuffer(7, mapSprites, '#testtileset', Tile.BLOCKED, 96, 32, 32, 32, 32, 32);
+    createSpriteBuffer(8, mapSprites, '#testtileset', Tile.WALK, 128, 32, 32, 32, 32, 32);
 
     var pos = 0;
     for (var iSprite = 0; iSprite < 4; iSprite++) {
-        createSpriteBuffer(pos++, playerSprites, 'playersprites', Tile.WALKING, 0, 24 * iSprite, 24, 24, 24, 24);
-        createSpriteBuffer(pos++, playerSprites, 'playersprites', Tile.WALKING, 24, 24 * iSprite, 24, 24, 24, 24);
+        createSpriteBuffer(pos++, playerSprites, '#playersprites', Tile.WALKING, 0, 24 * iSprite, 24, 24, 24, 24);
+        createSpriteBuffer(pos++, playerSprites, '#playersprites', Tile.WALKING, 24, 24 * iSprite, 24, 24, 24, 24);
     }
 
     for (var iSprite = 4; iSprite < 10; iSprite++) {
-        createSpriteBuffer(pos++, playerSprites, 'playersprites', Tile.SAILING, 0, 24 * iSprite, 24, 24, 24, 24);
-        createSpriteBuffer(pos++, playerSprites, 'playersprites', Tile.SAILING, 24, 24 * iSprite, 24, 24, 24, 24);
+        createSpriteBuffer(pos++, playerSprites, '#playersprites', Tile.SAILING, 0, 24 * iSprite, 24, 24, 24, 24);
+        createSpriteBuffer(pos++, playerSprites, '#playersprites', Tile.SAILING, 24, 24 * iSprite, 24, 24, 24, 24);
     }
 
-    createSpriteBuffer(0, itemSprites, 'items', Tile.BOAT, 0, 24, 24, 24, 24, 24);
-    createSpriteBuffer(1, itemSprites, 'items', Tile.AXE, 24, 24, 24, 24, 24, 24);
-    createSpriteBuffer(2, itemSprites, 'items', Tile.KEY, 48, 24, 24, 24, 24, 24);
+    createSpriteBuffer(0, itemSprites, '#items', Tile.BOAT, 0, 24, 24, 24, 24, 24);
+    createSpriteBuffer(1, itemSprites, '#items', Tile.AXE, 24, 24, 24, 24, 24, 24);
+    createSpriteBuffer(2, itemSprites, '#items', Tile.KEY, 48, 24, 24, 24, 24, 24);
 
     for (var iSprite = 0; iSprite < 4; iSprite++) {
-        createSpriteBuffer(iSprite, diamondSprites, 'diamond', Tile.DIAMOND, iSprite * 16, 0, 16, 16, 16, 16);
+        createSpriteBuffer(iSprite, diamondSprites, '#diamond', Tile.DIAMOND, iSprite * 16, 0, 16, 16, 16, 16);
     }
 
-    sounds[0] = createAudio('bgmusic');
+    sounds[0] = createAudio('#bgmusic');
     sounds[0].loop = true;
 
-    sounds[1] = createAudio('collect');
-    sounds[2] = createAudio('splash');
-    sounds[3] = createAudio('mapmove');
-    sounds[4] = createAudio('menuoption');
-    sounds[5] = createAudio('finish');
-    sounds[6] = createAudio('chop');
+    sounds[1] = createAudio('#collect');
+    sounds[2] = createAudio('#splash');
+    sounds[3] = createAudio('#mapmove');
+    sounds[4] = createAudio('#menuoption');
+    sounds[5] = createAudio('#finish');
+    sounds[6] = createAudio('#chop');
 
     sounds[5].volume = 0.2;
     sounds[5].play();
@@ -232,21 +232,12 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
     canvas.width = dw;
     canvas.height = dh;
 
-    var content = window.api.fs().readFileSync($(`#${src}`)[0].src.slice(
-                        window.api.os().type() == 'Windows_NT' ? 7 : 6));
-    var buffer = toArrayBuffer(content);
-    var blob = new Blob([buffer], { type: 'image/gif' });
-    var image = new Image();
-    image.src = URL.createObjectURL(blob);
+    var image = $(src)[0];
+    var context = canvas.getContext('2d');
 
-    image.onload = function() {
-        var context = canvas.getContext('2d');
+    context.drawImage(image, x, y, w, h, 0, 0, dw, dh);
 
-        context.drawImage(image, x, y, w, h, 0, 0, dw, dh);
-
-        sprites[sprite] = new Tile(canvas, type);
-
-    }
+    sprites[sprite] = new Tile(canvas, type);
 
 }
 
@@ -257,13 +248,10 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
  */
 function createAudio(src) {
-    var content = window.api.fs().readFileSync($(`#${src}`)[0].src.slice(
-        window.api.os().type() == 'Windows_NT' ? 7 : 6));
-3
-    var buffer = toArrayBuffer(content);
-    var blob = new Blob([buffer], { type: 'audio/wav' });
-
-    return new Audio(URL.createObjectURL(blob))
+    var content = window.api.getContent($(src)[0]);
+    var blob = new Blob([content], { type: 'audio/wav' });
+    
+    return new Audio(URL.createObjectURL(blob));
 
 }
 
@@ -747,22 +735,5 @@ function loadMap(content, callback) {
 
     callback(map);
 
-
-}
-
-/**
- * Buffer to Array Buffer
- * @param {*} buf the input buffer
- * @return an Array Buffer
- * 
- */
-function toArrayBuffer(buf) {
-    var ab = new ArrayBuffer(buf.length);
-    var view = new Uint8Array(ab);
-    for (var i = 0; i < buf.length; ++i) {
-        view[i] = buf[i];
-    }
-
-    return ab;
 
 }

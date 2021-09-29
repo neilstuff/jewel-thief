@@ -38,11 +38,29 @@ contextBridge.exposeInMainWorld(
         openUrl: (url) => {
             return ipcRenderer.send('openUrl', url);
         },
-        fs: () => {
-            return fs;
-        },
-        os: () => {
-            return os;
+        getContent: (element) => { 
+            /**
+             * Buffer to Array Buffer
+             * @param {*} buf the input buffer
+             * @return an Array Buffer
+             * 
+             */
+            function toArrayBuffer(buf) {
+                var ab = new ArrayBuffer(buf.length);
+                var view = new Uint8Array(ab);
+
+                for (var i = 0; i < buf.length; ++i) {
+                    view[i] = buf[i];
+                }
+
+                return ab;
+
+            }
+
+            var content = fs.readFileSync(element.src.slice(os.type() == 'Windows_NT' ? 7 : 6));
+        
+            return toArrayBuffer(content);
+
         },
         on: (message, callback) => {
             ipcRenderer.on(message, (event, path) => {
