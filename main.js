@@ -18,7 +18,6 @@ const mime = require('mime');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
-const os = require('os');
 const pug = require('pug');
 
 const locals = {};
@@ -50,11 +49,8 @@ function createWindow() {
         mainWindow.webContents.openDevTools();
     }
 
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.pug'),
-        protocol: 'pug',
-        slashes: true
-    }))
+    mainWindow.loadURL(`pug:///${path.join(__dirname, 'index.pug')}`);
+
 
     mainWindow.on('closed', () => {
 
@@ -69,8 +65,9 @@ app.allowRendererProcessReuse = true;
 app.on('ready', function () {
 
     protocol.registerBufferProtocol('pug', function (request, callback) {
-        let parsedUrl = require('url').parse(request.url);
-        var url = path.normalize(request.url.replace(os.type() == 'Windows_NT' ? 'pug:///' : 'pug://', ''));
+        let parsedUrl = new URL(request.url);
+        let url = path.normalize(path.toNamespacedPath(parsedUrl.pathname).startsWith("\\\\?\\") ?
+                                parsedUrl.pathname.replace('/', '') :  parsedUrl.pathname);
         let ext = path.extname(url);
 
         console.log(url);
