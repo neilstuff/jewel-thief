@@ -59,7 +59,7 @@ contextBridge.exposeInMainWorld(
             
             let parsedUrl = new URL(url);
             let pathname = path.normalize(path.toNamespacedPath(parsedUrl.pathname).startsWith("\\\\?\\") 
-                         ? parsedUrl.pathname.replace('/', '') 
+                         ? parsedUrl.pathname.replace(/^\/*/, '')
                          : parsedUrl.pathname);
 
             return toArrayBuffer(fs.readFileSync(pathname));
