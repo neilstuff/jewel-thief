@@ -248,7 +248,8 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
  */
 function createAudio(src) {
-    var content = window.api.getContent($(src)[0]);
+    console.log(src, $(src)[0].src);
+    var content = window.api.getContent($(src)[0].src);
     var blob = new Blob([content], { type: 'audio/wav' });
     
     return new Audio(URL.createObjectURL(blob));

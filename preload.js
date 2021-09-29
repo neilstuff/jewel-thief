@@ -4,7 +4,7 @@ const {
 } = require("electron");
 
 const fs = require('fs');
-const os = require('os');
+const path = require('path');
 
 contextBridge.exposeInMainWorld(
     "api", {
@@ -38,7 +38,7 @@ contextBridge.exposeInMainWorld(
         openUrl: (url) => {
             return ipcRenderer.send('openUrl', url);
         },
-        getContent: (element) => { 
+        getContent: (url) => { 
             /**
              * Buffer to Array Buffer
              * @param {*} buf the input buffer
@@ -56,10 +56,13 @@ contextBridge.exposeInMainWorld(
                 return ab;
 
             }
+            
+            let parsedUrl = new URL(url);
+            let pathname = path.normalize(path.toNamespacedPath(parsedUrl.pathname).startsWith("\\\\?\\") 
+                         ? parsedUrl.pathname.replace('/', '') 
+                         : parsedUrl.pathname);
 
-            var content = fs.readFileSync(element.src.slice(os.type() == 'Windows_NT' ? 7 : 6));
-        
-            return toArrayBuffer(content);
+            return toArrayBuffer(fs.readFileSync(pathname));
 
         },
         on: (message, callback) => {
