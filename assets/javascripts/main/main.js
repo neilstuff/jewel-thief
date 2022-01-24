@@ -438,10 +438,6 @@ function gameTicker(timestamp) {
 function getTile(x, y, callback) {
     var xGrid = Math.trunc(x / gridSize);
     var yGrid = Math.trunc(y / gridSize);
-    var gridPos = {
-        x: xGrid + tilePos.x,
-        y: yGrid + tilePos.y
-    }
 
     var sprite = map[xGrid + tilePos.x][yGrid + tilePos.y];
     var tile = mapSprites[translate(map[xGrid + tilePos.x][yGrid + tilePos.y])];
@@ -458,59 +454,49 @@ function getTile(x, y, callback) {
         if (sprite == BOAT) {
             spritePos.x = ((xGrid) * tileSize + 8);
             spritePos.y = ((yGrid) * tileSize + 8);
-            map[xGrid + tilePos.x][yGrid + tilePos.y] = 22;
+
+            map[xGrid + tilePos.x][yGrid + tilePos.y] = WATER;
             playerContext.disposition = SAIL;
             playerContext.motion = (playerContext.motion == 2 || playerContext.motion == 3) ? 10 : 12;
             sounds[2].play();
-        }
-
-        if (sprite == AXE && !playerContext.axe) {
+        } else if (sprite == AXE && !playerContext.axe) {
             map[xGrid + tilePos.x][yGrid + tilePos.y] = FIELD;
             playerContext.axe = true;
             sounds[1].play();
             $(".axe").css('opacity', '1.0');
-        }
-
-        if (sprite == DIAMOND) {
+        } else if (sprite == DIAMOND) {
             map[xGrid + tilePos.x][yGrid + tilePos.y] = FIELD;
             sounds[1].play();
             playerContext.diamonds = playerContext.diamonds == 3 ? 3 : playerContext.diamonds + 1;
             $(".diamond" + playerContext.diamonds).css('opacity', '1.0');
-        }
-
-        if (sprite == KEY && !playerContext.key) {
+        } else if (sprite == KEY && !playerContext.key) {
             map[xGrid + tilePos.x][yGrid + tilePos.y] = FIELD;
             playerContext.key = true;
             sounds[1].play();
             $(".key").css('opacity', '1.0');
-        }
-
-        if (sprite == GATE && playerContext.key) {
+        } else if (sprite == GATE && playerContext.key) {
             sounds[0].pause();
             sounds[0].currentTime = 0;
             playerContext.completed = true;
             sounds[5].play();
             $("#completed-dialog").css('display', 'inline-block');
-        }
-
-        if ((tile.getType() == Tile.WALK || sprite == SNAG && playerContext.axe) &&
+        } else if ((tile.getType() == Tile.WALK || sprite == SNAG && playerContext.axe) &&
             playerContext.disposition == SAIL) {
+            console.log(xGrid, yGrid);
             spritePos.x = ((xGrid) * tileSize + 8);
             spritePos.y = ((yGrid) * tileSize + 8);
             playerContext.motion = (playerContext.motion == 10 || playerContext.motion == 11) ? 2 : 4;
-            map[spritePos.gridX][spritePos.gridY] = 10;
+            map[spritePos.gridX][spritePos.gridY] = BOAT;
             sounds[4].play();
             playerContext.disposition = WALK;
-        }
-
-        if (playerContext.axe && sprite == SNAG) {
+        } else if (playerContext.axe && sprite == SNAG) {
             map[xGrid + tilePos.x][yGrid + tilePos.y] = FIELD;
             sounds[6].play();
             playerContext.disposition == SAIL
         }
 
-        spritePos.gridX = gridPos.x;
-        spritePos.gridY = gridPos.y;
+        spritePos.gridX = xGrid + tilePos.x;
+        spritePos.gridY = yGrid + tilePos.y;
 
     }
 
