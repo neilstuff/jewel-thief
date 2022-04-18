@@ -56,7 +56,9 @@ var spritePos = {
     gridY: 15
 }
 
-var previousPos = {
+var prevPos = {
+    tileX: 15,
+    tileY: 15,
     gridX: 15,
     gridY: 15
 }
@@ -300,6 +302,11 @@ function gameTicker(timestamp) {
 
         var ctx = $('#canvas')[0].getContext('2d');
 
+        prevPos.tileX = tilePos.x;
+        prevPos.tileY = tilePos.y;
+        prevPos.gridX = spritePos.x;
+        prevPos.gridY = spritePos.y;
+
         switch (Math.abs(direction)) {
 
             case LEFT:
@@ -443,9 +450,6 @@ function getTile(x, y, callback) {
     var xGrid = Math.trunc(x / gridSize);
     var yGrid = Math.trunc(y / gridSize);
 
-    var xOrg = spritePos.gridX;
-    var yOrg = spritePos.gridY;
-
     var sprite = map[xGrid + tilePos.x][yGrid + tilePos.y];
     var tile = mapSprites[translate(map[xGrid + tilePos.x][yGrid + tilePos.y])];
 
@@ -459,8 +463,6 @@ function getTile(x, y, callback) {
         callback(xGrid + tilePos.x, yGrid + tilePos.y, tile, sprite);
 
         if (sprite == BOAT) {
-            spritePos.x = ((xGrid) * tileSize + 8);
-            spritePos.y = ((yGrid) * tileSize + 8);
             map[xGrid + tilePos.x][yGrid + tilePos.y] = WATER;
             playerContext.disposition = SAIL;
             playerContext.motion = (playerContext.motion == 2 || playerContext.motion == 3) ? 10 : 12;
@@ -489,12 +491,13 @@ function getTile(x, y, callback) {
         } else if ((tile.getType() == Tile.WALK || sprite == SNAG && playerContext.axe) &&
             playerContext.disposition == SAIL) {
 
-            console.log(spritePos.gridX, spritePos.gridY);
+            console.log(spritePos.gridX, spritePos.gridY, spritePos.x, spritePos.y, prevPos.tileX, prevPos.tileY, prevPos.gridX, prevPos.gridY, map.length, map[0].length);
 
-            map[previousPos.gridX][previousPos.gridY] = BOAT;
+            map[prevPos.tileX + Math.trunc(prevPos.gridX / gridSize)][prevPos.tileY + Math.trunc(prevPos.gridY / gridSize)] = BOAT;
 
-            spritePos.x = ((xGrid) * tileSize + 8);
-            spritePos.y = ((yGrid) * tileSize + 8);
+            spritePos.x = (xGrid * tileSize + 8);
+            spritePos.y = (yGrid * tileSize + 8);
+
             playerContext.motion = (playerContext.motion == 10 || playerContext.motion == 11) ? 2 : 4;
             sounds[4].play();
             playerContext.disposition = WALK;
@@ -502,9 +505,6 @@ function getTile(x, y, callback) {
             map[xGrid + tilePos.x][yGrid + tilePos.y] = FIELD;
             sounds[6].play();
         }
-
-        previousPos.gridX = spritePos.gridX;
-        previousPos.gridY = spritePos.gridY;
 
         spritePos.gridX = xGrid + tilePos.x;
         spritePos.gridY = yGrid + tilePos.y;
