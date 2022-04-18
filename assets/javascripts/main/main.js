@@ -56,6 +56,11 @@ var spritePos = {
     gridY: 15
 }
 
+var previousPos = {
+    gridX: 15,
+    gridY: 15
+}
+
 var playerContext = {
     motion: 0,
     lastTime: 0,
@@ -95,11 +100,11 @@ $('#cancelSafe').on('click', (e) => {
  * Respond to the Document 'ready' event
  * 
  */
- $(() => {
-     
+$(() => {
+
     document.addEventListener('dragover', event => event.preventDefault());
     document.addEventListener('drop', event => event.preventDefault());
-    
+
     var context = $('#canvas')[0].getContext('2d');
 
     createSpriteBuffer(0, mapSprites, '#testtileset', Tile.BLOCKED, 32, 32, 32, 32, 32, 32);
@@ -166,7 +171,7 @@ $('#cancelSafe').on('click', (e) => {
  * 
  */
 function setup() {
-    var content = $('script[data-template="basic-map"]').text();
+    var content = $('script[data-template="basic-map"]').text().replace(/ +/g, ' ');
 
     loadMap(content, (map) => {
 
@@ -248,10 +253,9 @@ function createSpriteBuffer(sprite, sprites, src, type, x, y, w, h, dw, dh) {
 
  */
 function createAudio(src) {
-    console.log(src, $(src)[0].src);
     var content = window.api.getContent($(src)[0].src);
     var blob = new Blob([content], { type: 'audio/wav' });
-    
+
     return new Audio(URL.createObjectURL(blob));
 
 }
@@ -439,6 +443,9 @@ function getTile(x, y, callback) {
     var xGrid = Math.trunc(x / gridSize);
     var yGrid = Math.trunc(y / gridSize);
 
+    var xOrg = spritePos.gridX;
+    var yOrg = spritePos.gridY;
+
     var sprite = map[xGrid + tilePos.x][yGrid + tilePos.y];
     var tile = mapSprites[translate(map[xGrid + tilePos.x][yGrid + tilePos.y])];
 
@@ -454,7 +461,6 @@ function getTile(x, y, callback) {
         if (sprite == BOAT) {
             spritePos.x = ((xGrid) * tileSize + 8);
             spritePos.y = ((yGrid) * tileSize + 8);
-
             map[xGrid + tilePos.x][yGrid + tilePos.y] = WATER;
             playerContext.disposition = SAIL;
             playerContext.motion = (playerContext.motion == 2 || playerContext.motion == 3) ? 10 : 12;
@@ -482,18 +488,23 @@ function getTile(x, y, callback) {
             $("#completed-dialog").css('display', 'inline-block');
         } else if ((tile.getType() == Tile.WALK || sprite == SNAG && playerContext.axe) &&
             playerContext.disposition == SAIL) {
-            console.log(xGrid, yGrid);
+
+            console.log(spritePos.gridX, spritePos.gridY);
+
+            map[previousPos.gridX][previousPos.gridY] = BOAT;
+
             spritePos.x = ((xGrid) * tileSize + 8);
             spritePos.y = ((yGrid) * tileSize + 8);
             playerContext.motion = (playerContext.motion == 10 || playerContext.motion == 11) ? 2 : 4;
-            map[spritePos.gridX][spritePos.gridY] = BOAT;
             sounds[4].play();
             playerContext.disposition = WALK;
         } else if (playerContext.axe && sprite == SNAG) {
             map[xGrid + tilePos.x][yGrid + tilePos.y] = FIELD;
             sounds[6].play();
-            playerContext.disposition == SAIL
         }
+
+        previousPos.gridX = spritePos.gridX;
+        previousPos.gridY = spritePos.gridY;
 
         spritePos.gridX = xGrid + tilePos.x;
         spritePos.gridY = yGrid + tilePos.y;
@@ -715,12 +726,11 @@ function readFileMap() {
 function loadMap(content, callback) {
     var map = [];
 
-    var lines = content.split(/\r?\n/);
+    var lines = content.trim().split(/\r?\n/);
+
     for (var iLine in lines) {
-        map.push(lines[iLine].split(/\s/));
+        map.push(lines[iLine].trim().split(/\s/));
     }
-
     callback(map);
-
 
 }

@@ -1,16 +1,16 @@
-@font-face { 
-	font-family: bitOperatorPlus; 
-	src: url(../fonts/8bitOperatorPlusSC-Regular.ttf); 
+@font-face {
+    font-family: bitOperatorPlus;
+    src: url(../fonts/8bitOperatorPlusSC-Regular.ttf);
 }
 
 body,
 p {
-  font-family: bitOperatorPlus;
+    font-family: bitOperatorPlus;
 }
 
-.controls { 
-		font-family: bitOperatorPlus; 
-		font-size: 12px;
+.controls {
+    font-family: bitOperatorPlus;
+    font-size: 12px;
 }
 
 .preload {
